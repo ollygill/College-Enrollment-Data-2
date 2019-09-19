@@ -9,17 +9,18 @@ output: html_document
 knitr::opts_chunk$set(echo = FALSE)
 library(readxl)
 library(tidyverse)
+library(janitor)
 ```
 
+The English class with the largest enrollment.
 ```{r}
-x <- read_xlsx("class_enrollment_summary_by_term_9.17.19.xlsx", skip = 3)
-glimpse(x)
-```
+x <- read_excel("class_enrollment_summary_by_term_9.17.19.xlsx", skip = 3) %>%
+  clean_names() %>%
+  filter(course_department == "English") %>%
+  arrange(desc(total)) %>%
+  select(course_department, course_name, total) %>%
+  head(1)
 
-```{r}
-x %>%
-  arrange(desc(Total)) %>%
-  filter(`Course Department` == "English") %>%
-  select(`Course Title`, `Course Name`, Total)
+x
 ```
 
